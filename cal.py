@@ -2,6 +2,7 @@
 # Autor: Filipe Ligeiro Silva
 
 import sys
+from datetime import datetime, timedelta
 
 # Valores do primeiro dia de cada mes e dos dias da semana
 primeiro_mes = "ADDGBEGCFADF"
@@ -9,7 +10,7 @@ dias = ["domingo", "segunda", "terca", "quarta", "quinta", "sexta", "sabado"]
 
 # Passa uma letra maiuscula para numero de 1 a 7
 def letra_para_num(letra):
-    return ord(letra) - ord('A') + 1
+    return ord(letra) - ord("A") + 1
 
 # Passa um numero de 1 a 7 para dia da semana
 def num_para_dia(num):
@@ -31,11 +32,11 @@ def calcula_dia_semana(escolha, dia, mes, ano):
     # Escrita do dia original
     print_dia(dia, mes, ano)
     # Calculo dos valores que serao diferentes
-    if (escolha == 'g'): # Calendario gregoriano
-        regressoes = (ano - 1) + (ano // 4) - (ano // 100) + (ano // 400)
+    if (escolha == "g"): # Calendario gregoriano
+        regressoes = (ano - 1) + (ano//4) - (ano//100) + (ano//400)
         n = 7 - regressoes % 7
-    elif (escolha == 'j'): # Calendario juliano
-        regressoes = (ano - 1) + (ano // 4)
+    elif (escolha == "j"): # Calendario juliano
+        regressoes = (ano - 1) + (ano//4)
         n = 2 - regressoes % 7
     # Restante calculo, comum a ambos os calendarios
     r = letra_para_num(primeiro_mes[mes - 1]) + dia
@@ -47,10 +48,42 @@ def calcula_dia_semana(escolha, dia, mes, ano):
     # Apresentacao do resultado
     num_para_dia(w)
 
+# Calcula o dia de pascoa de um ano
+def calcula_dia_pascoa(escolha, ano):
+    # Print do ano
+    print("Pascoa do ano {}".format(ano))
+    g = 1 + ano % 19 # Numero de ouro
+    # Calculo dos valores que serao diferentes
+    if (escolha == "g"): # Calendario gregoriano
+        regressoes = (ano - 1) + (ano//4) - (ano//100) + (ano//400)
+        e0 = (57 + (11 * g) - (ano//100) + ((ano//100)//4) +
+             (((ano//100) - (((ano//100) - 17)//25))//3))
+        v = (e0/24 - e0/25) + (g/12) * (e0/25 - e0/26)
+        e = e0 + v
+    elif (escolha == "j"): # Calendario juliano
+        regressoes = (ano + 4) + (ano//4)
+        e = (11 * g - 3) % 30 # Epacta
+    d = 20 + (54 - e) % 30
+    c = 1 + (d + 2) % 7
+    n = 7 - regressoes % 7
+    if (c < n):
+        s = d + n - c % 7
+    else:
+        s = d + 7 - (c - n) % 7
+    dia = datetime(ano, 3, 1)
+    res = dia + timedelta(s - 1)
+    calcula_dia_semana(escolha, res.day, res.month, res.year)
+
 # MAIN FUNCTION
 if __name__ == "__main__":
     c = sys.argv[1]
-    d = int(sys.argv[2])
-    m = int(sys.argv[3])
-    a = int(sys.argv[4])
-    calcula_dia_semana(c, d, m, a)
+    if (c == "d"):
+        cal = sys.argv[2]
+        d = int(sys.argv[3])
+        m = int(sys.argv[4])
+        a = int(sys.argv[5])
+        calcula_dia_semana(cal, d, m, a)
+    elif (c == "p"):
+        cal = sys.argv[2]
+        a = int(sys.argv[3])
+        calcula_dia_pascoa(cal, a)
