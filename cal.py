@@ -12,14 +12,26 @@ def letra_para_num(letra):
 def translate(num):
     print(dias[num - 1])
 
+def print_dia(dia, mes, ano):
+    print("Dia {}/{}/{}".format(dia, mes, ano))
+
+def eh_bissexto(ano):
+    if (ano == 2000):
+        return True
+
 def calcula_gregoriano(dia, mes, ano):
     return 0
 
 def calcula_juliano(dia, mes, ano):
-    n = 7 - ((ano + 4) + (ano // 4)) % 7
+    print_dia(dia, mes, ano)
+    regressoes = (ano - 1) + (ano // 4)
+    n = 2 - regressoes % 7
     r = letra_para_num(primeiro_mes[mes - 1]) + dia
     c = 1 + (r - 2) % 7
-    w = 1 + (c - n + 7) % 7
+    if (eh_bissexto(ano) and mes not in (1, 2)):
+        w = 1 + (c - n + 6) % 7
+    else:
+        w = 1 + (c - n + 7) % 7
     translate(w)
 
 if __name__ == "__main__":
@@ -27,7 +39,6 @@ if __name__ == "__main__":
     d = int(sys.argv[2])
     m = int(sys.argv[3])
     a = int(sys.argv[4])
-    print("Dia {}/{}/{}".format(d, m, a))
     if (c == "g"):
         calcula_gregoriano(d, m, a)
     elif (c == "j"):
