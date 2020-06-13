@@ -26,30 +26,25 @@ def eh_bissexto(ano):
     else:
         return False
 
-# Calcula o dia para o calendario gregoriano
-def calcula_gregoriano(dia, mes, ano):
+# Calcula o dia da semana
+def calcula_dia_semana(escolha, dia, mes, ano):
+    # Escrita do dia original
     print_dia(dia, mes, ano)
-    regressoes = (ano - 1) + (ano // 4) - (ano // 100) + (ano // 400)
-    n = 7 - regressoes % 7
+    # Calculo dos valores que serao diferentes
+    if (escolha == 'g'): # Calendario gregoriano
+        regressoes = (ano - 1) + (ano // 4) - (ano // 100) + (ano // 400)
+        n = 7 - regressoes % 7
+    elif (escolha == 'j'): # Calendario juliano
+        regressoes = (ano - 1) + (ano // 4)
+        n = 2 - regressoes % 7
+    # Restante calculo, comum a ambos os calendarios
     r = letra_para_num(primeiro_mes[mes - 1]) + dia
     c = 1 + (r - 2) % 7
     if (eh_bissexto(ano) and mes in (1, 2)):
         w = 1 + (c - n + 6) % 7
     else:
         w = 1 + (c - n + 7) % 7
-    num_para_dia(w)
-
-# Calcula o dia para o calendario juliano
-def calcula_juliano(dia, mes, ano):
-    print_dia(dia, mes, ano)
-    regressoes = (ano - 1) + (ano // 4)
-    n = 2 - regressoes % 7
-    r = letra_para_num(primeiro_mes[mes - 1]) + dia
-    c = 1 + (r - 2) % 7
-    if (eh_bissexto(ano) and mes in (1, 2)):
-        w = 1 + (c - n + 6) % 7
-    else:
-        w = 1 + (c - n + 7) % 7
+    # Apresentacao do resultado
     num_para_dia(w)
 
 # MAIN FUNCTION
@@ -58,7 +53,4 @@ if __name__ == "__main__":
     d = int(sys.argv[2])
     m = int(sys.argv[3])
     a = int(sys.argv[4])
-    if (c == "g"):
-        calcula_gregoriano(d, m, a)
-    elif (c == "j"):
-        calcula_juliano(d, m, a)
+    calcula_dia_semana(c, d, m, a)
