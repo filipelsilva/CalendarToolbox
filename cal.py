@@ -64,12 +64,14 @@ def calcula_dia_pascoa(escolha, ano):
     if (escolha == "g"): # Calendario gregoriano
         regressoes = (ano - 1) + (ano//4) - (ano//100) + (ano//400)
         e0 = (57 + (11 * g) - (ano//100) + ((ano//100)//4) +
-             (((ano//100) - (((ano//100) - 17)//25))//3))
+             (((ano//100) - (((ano//100) - 17)//25))//3)) % 30
         v = (e0/24 - e0/25) + (g/12) * (e0/25 - e0/26)
         e = e0 + v # Epacta
 
     elif (escolha == "j"): # Calendario juliano
         regressoes = (ano + 4) + (ano//4)
+        e0 = "nao importante"
+        v = "nao importante"
         e = (11 * g - 3) % 30 # Epacta
 
     # Restante calculo, comum a ambos os calendarios
