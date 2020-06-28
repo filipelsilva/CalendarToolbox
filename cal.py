@@ -65,7 +65,7 @@ def calcula_dia_pascoa(escolha, ano):
         regressoes = (ano - 1) + (ano//4) - (ano//100) + (ano//400)
         e0 = (57 + (11 * g) - (ano//100) + ((ano//100)//4) +
              (((ano//100) - (((ano//100) - 17)//25))//3)) % 30
-        v = (e0/24 - e0/25) + (g/12) * (e0/25 - e0/26)
+        v = (e0//24 - e0//25) + (g//12) * (e0//25 - e0//26)
         e = e0 + v # Epacta
 
     elif (escolha == "j"): # Calendario juliano
